@@ -19,24 +19,20 @@ let registerUser = async function (req, res) {
 
     //-----------------------------TITLE VALIDATION----------------------------------------------------
 
-    /*if (!title) {
-      return res.status(400).send({ status: false, message: "You must enter title" });
-    }*/
+  
 
     if (!isValid(title)) {
-      return res.status(400).send({ status: false, message: "title should a valid string" });
+      return res.status(400).send({ status: false, message: "title should be given with a valid string" });
     }
    
     if (!title.trim().match(/^(Miss|Mr|Mrs)$/)) {
       return res.status(400).send({ status: false, message: "enter valid title" });
     }
     //----------------------------------NAME VALIDATION------------------------------------------------
-    /*if (!name) {
-      return res.status(400).send({ status: false, message: "You must enter name" });
-    }*/
+    
 
     if (!isValid(name)) {
-      return res.status(400).send({ status: false, message: "please enter a valid Name" });
+      return res.status(400).send({ status: false, message: "please enter name with a valid string" });
     }
 
     if (!/^[a-zA-Z ]{2,30}$/.test(data.name.trim())) {
@@ -45,11 +41,10 @@ let registerUser = async function (req, res) {
 
     //-----------------------------------PHONE VALIDATION-----------------------------------------------
 
-    /*if (!phone)
-      return res.status(400).send({ status: false, message: " Please enter phone No." });*/
+    
 
     if (!isValid(phone)) {
-      return res.status(400).send({ status: false, message: "Phone number should be a valid string." });
+      return res.status(400).send({ status: false, message: "Please enter Phone number with a valid string." });
     }
 
     if (!phone.trim().match(/^(\+91[\-\s]?)?[0]?(91)?[6789]\d{9}$/)) {
@@ -62,12 +57,10 @@ let registerUser = async function (req, res) {
     }
 
     //------------------------------------------EMAIL VALIDATION--------------------------------------------
-    /*if (!email) {
-      return res.status(400).send({ status: false, message: " please enter email" });
-    }*/
+    
 
     if (!isValid(email)) {
-      return res.status(400).send({ status: false, message: "email should be a valid string" });
+      return res.status(400).send({ status: false, message: "please enter email with a valid string" });
     }
 
     if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email.trim())) {
@@ -80,21 +73,23 @@ let registerUser = async function (req, res) {
       return res.status(400).send({ status: false, message: "email already registerd" });
     }
     //----------------------------------------PASSWORD VALIDATION------------------------------------------
-   /* if (!password) {
-      return res.status(400).send({ status: false, message: "please enter password" });
-    }*/
+  
 
     if (!isValid(password)) {
-      return res.status(400).send({ status: false, message: "password should be valid string" });
+      return res.status(400).send({ status: false, message: "please enter password with a valid string" });
     }
 
     if (password.length<8 || password.length>15) {
       return res.status(400).send({status: false,message:"Password should be 8 to 15 characters"});
     }
     //--------------------------------------------ADDRESS VALIDATION-----------------------------------------
-    if (address) {
-      if (typeof address != "object" || Object.keys(address).length == 0) {
-        return res.status(400).send({status: false,message: "address should be object and not empty",
+   
+if(Object.keys(data).includes('address'))
+{
+    if(typeof address!=="object") return res.status(400).send({ status: false, message: "address should be an object" })
+   
+      if (Object.keys(address).length == 0) {
+        return res.status(400).send({status: false,message: "address should not be empty",
         });
       }
 
@@ -145,7 +140,7 @@ let login = async function (req, res) {
     ////////////////////////////////////------------CEATE TOKEN----------////////////////////////////////
     let date = Date.now();
     let createTime = Math.floor(date / 1000);
-    let expTime = createTime + 1000;
+    let expTime = createTime + 3000;
 
     let token = jwt.sign(
       {
