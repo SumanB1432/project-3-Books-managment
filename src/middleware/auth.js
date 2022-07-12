@@ -12,10 +12,10 @@ module.exports.Authentication = function (req, res, next) {
     const decoded = jwt.decode(token);
    
     if (!decoded) {
-      return res.status(401).send({ status: false, message: "Invalid authentication token in request headers." })
+      return res.status(401).send({ status: false, message: "Invalid authentication token in request headers ⚠️" })
     }
     if (Date.now() > (decoded.exp) * 1000) {
-      return res.status(401).send({ status: false, message: "Session expired! Please login again." })
+      return res.status(401).send({ status: false, message: "Session expired! Please login again ⚠️" })
     }
 
     

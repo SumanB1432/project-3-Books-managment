@@ -19,21 +19,21 @@ let registerUser = async function (req, res) {
 
     //-----------------------------TITLE VALIDATION----------------------------------------------------
 
-    if (!title) {
-      res.status(400).send({ status: false, message: "You must enter title" });
-    }
+    /*if (!title) {
+      return res.status(400).send({ status: false, message: "You must enter title" });
+    }*/
 
     if (!isValid(title)) {
       return res.status(400).send({ status: false, message: "title should a valid string" });
     }
-
-    if (!title.match(/^(Miss|Mr|Mrs)$/.trim())) {
+   
+    if (!title.trim().match(/^(Miss|Mr|Mrs)$/)) {
       return res.status(400).send({ status: false, message: "enter valid title" });
     }
     //----------------------------------NAME VALIDATION------------------------------------------------
-    if (!name) {
-      res.status(400).send({ status: false, message: "You must enter name" });
-    }
+    /*if (!name) {
+      return res.status(400).send({ status: false, message: "You must enter name" });
+    }*/
 
     if (!isValid(name)) {
       return res.status(400).send({ status: false, message: "please enter a valid Name" });
@@ -45,8 +45,8 @@ let registerUser = async function (req, res) {
 
     //-----------------------------------PHONE VALIDATION-----------------------------------------------
 
-    if (!phone)
-      return res.status(400).send({ status: false, message: " Please enter phone No." });
+    /*if (!phone)
+      return res.status(400).send({ status: false, message: " Please enter phone No." });*/
 
     if (!isValid(phone)) {
       return res.status(400).send({ status: false, message: "Phone number should be a valid string." });
@@ -55,15 +55,16 @@ let registerUser = async function (req, res) {
     if (!phone.trim().match(/^(\+91[\-\s]?)?[0]?(91)?[6789]\d{9}$/)) {
       return res.status(400).send({ status: false, message: "Enter a valid phone number" });
     }
-    let Phone = await userModel.findOne({ phone: phone });
+
+    let Phone = await userModel.findOne({ phone});
     if (Phone) {
       return res.status(400).send({ status: false, message: "Phone Number already registered" });
     }
 
     //------------------------------------------EMAIL VALIDATION--------------------------------------------
-    if (!email) {
+    /*if (!email) {
       return res.status(400).send({ status: false, message: " please enter email" });
-    }
+    }*/
 
     if (!isValid(email)) {
       return res.status(400).send({ status: false, message: "email should be a valid string" });
@@ -73,15 +74,15 @@ let registerUser = async function (req, res) {
       return res.status(400).send({ status: false, message: "Enter a valid email address." });
     }
 
-    let Email = await userModel.findOne({ email: email });
+    let Email = await userModel.findOne({ email });
 
     if (Email) {
       return res.status(400).send({ status: false, message: "email already registerd" });
     }
     //----------------------------------------PASSWORD VALIDATION------------------------------------------
-    if (!password) {
+   /* if (!password) {
       return res.status(400).send({ status: false, message: "please enter password" });
-    }
+    }*/
 
     if (!isValid(password)) {
       return res.status(400).send({ status: false, message: "password should be valid string" });
@@ -105,6 +106,7 @@ let registerUser = async function (req, res) {
         return res.status(400).send({ status: false, message: "Invalid pincode" });}
     }
     //----------------------------------------CREATE USER------------------------------------------------
+    
     let newUser = await userModel.create(data);
     return res.status(201).send({ status: true, message: "Success", data: newUser });
   } 
@@ -125,7 +127,7 @@ let login = async function (req, res) {
     }
     ////////////////////////////////////-----CHECK EMAIL---////////////////////////////////////////
     if (!isValid(email)) {
-      return res.status(400).send({ status: false, messgage: "email is required" });
+      return res.status(400).send({ status: false, messgage: "email is required " });
     }
     //////////////////////////////////---------CHECK PASSWORD---------///////////////////////////////
     if (!isValid(password)) {
@@ -138,7 +140,7 @@ let login = async function (req, res) {
     });
 
     if (!checkedUser) {
-      return res.status(404).send({ status: false, message: "email or password is not correct" });
+      return res.status(401).send({ status: false, message: "email or password is not correct" });
     }
     ////////////////////////////////////------------CEATE TOKEN----------////////////////////////////////
     let date = Date.now();
