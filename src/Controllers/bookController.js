@@ -154,7 +154,7 @@ const getBook = async function (req, res) {
 
     if (category) 
     {
-      if (isValid(category) && /^[a-zA-Z]{2,20}$/.test(category)) 
+      if (isValid(category) && /^[a-zA-Z ]{2,20}$/.test(category)) 
       {
         filterData.category = category;
       } 
@@ -178,7 +178,7 @@ const getBook = async function (req, res) {
 
 
     let findData = await bookModel.find(filterData).select({title: 1,excerpt: 1,userId: 1,category: 1,
-        reviews: 1,releasedAt: 1,}).sort({ title: 1 });
+        reviews: 1,releasedAt: 1,}).collation({ locale: "en", strength: 2 }).sort({ title: 1 });  //.sort({ title: 1 });
 
     if (findData.length == 0)
     {
@@ -351,10 +351,12 @@ const DeleteBook = async function (req, res) {
      return res.status(400).send({status: false, message: "Please enter a valid bookId",});
     }
 
-    /********************************************AUTHORISATION************************************************/
+
     let authCheck = await bookModel.findById(bookId);
     if (!authCheck)
       return res.status(404).send({ status: false, message: "No Document found." });
+
+      /********************************************AUTHORISATION************************************************/
 
     if (authCheck.userId != req.userId)
       return res.status(403).send({status: false, message: "You don't have authority to delete this Book."});

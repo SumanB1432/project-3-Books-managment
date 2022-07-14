@@ -92,13 +92,13 @@ const createReview = async function(req, res){
         }
 
         if (!mongoose.isValidObjectId(reviewId))
-         {
+        {
         return res.status(400).send({ status: false, message: "review id is not valid" })
         }
 
         let bookId = req.params.bookId
-
         if (!mongoose.isValidObjectId(bookId)) return res.status(400).send({ status: false, message: "Invalid book id." })
+
 
         if(data.reviewedBy!==undefined)
         {
@@ -117,16 +117,6 @@ const createReview = async function(req, res){
         }
 
 
-        let checkBook = await bookModel.findOne({ _id: bookId, isDeleted: false })
-        if (!checkBook) return res.status(404).send({ status: false, message: 'Book Id Not Found ' })
-
-
-        let reviewBook = await reviewModel.findOne({_id:reviewId,bookId:bookId,isDeleted:false})
-        if(!reviewBook)
-        {
-            return res.status(404).send({status:false,message:"Review is not found or already deleted"})
-        }
-
         if(data.rating)
         {
         if (typeof data.rating != 'number' || data.rating < 1 || data.rating > 5)
@@ -139,6 +129,19 @@ const createReview = async function(req, res){
         {
      return res.status(400).send({ status: false, message: "enter a valid name" })
         }
+
+
+        let checkBook = await bookModel.findOne({ _id: bookId, isDeleted: false })
+        if (!checkBook) return res.status(404).send({ status: false, message: 'Book Id Not Found ' })
+
+
+        let reviewBook = await reviewModel.findOne({_id:reviewId,bookId:bookId,isDeleted:false})
+        if(!reviewBook)
+        {
+            return res.status(404).send({status:false,message:"Review is not found or already deleted"})
+        }
+
+       
      
      /********************************************UPDATING REVIEW***********************************************/
 

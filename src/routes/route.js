@@ -26,4 +26,13 @@ router.put("/books/:bookId/review/:reviewId",reviewController.updatedReview)
 router.delete("/books/:bookId/review/:reviewId",reviewController.deleteReview)
 
 
+// If Invalid API requested.
+router.all("/**", function (req, res) {
+    res.status(400).send({
+      status: false,
+      message: "INVALID END-POINT: The API You requested is NOT available.",
+    });
+  });
+  
+
 module.exports = router;

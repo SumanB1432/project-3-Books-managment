@@ -51,7 +51,7 @@ let registerUser = async function (req, res) {
       return res.status(400).send({ status: false, message: "Please enter Phone number with a valid string." });
     }
 
-    if (!phone.trim().match(/^(\+91[\-\s]?)?[0]?(91)?[6789]\d{9}$/)) {
+    if (!phone.trim().match(/^[6-9]\d{9}$/)) {
       return res.status(400).send({ status: false, message: "Enter a valid phone number" });
     }
 
@@ -154,7 +154,7 @@ let login = async function (req, res) {
 
     let date = Date.now();
     let createTime = Math.floor(date / 1000);
-    let expTime = createTime + 300;
+    let expTime = createTime + 3000;
 
     let token = jwt.sign(
       {
