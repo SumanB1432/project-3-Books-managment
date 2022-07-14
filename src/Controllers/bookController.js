@@ -4,6 +4,7 @@ const userModel = require("../Models/userModel");
 const reviewModel = require("../Models/reviewModel");
 
 
+
 let isValid = function (value) {
   if (typeof value === "undefined" || typeof value == null) return false
   if (typeof value === "string" && value.trim().length == 0) return false;
@@ -17,7 +18,7 @@ let createBooks = async function (req, res) {
   try {
     let data = req.body;
 
-    let { title, excerpt, userId, ISBN, category, subcategory, releasedAt } = data;
+    let { title, excerpt, userId, ISBN, category, subcategory, releasedAt,bookCover } = data;
 
     if (!Object.keys(data).length) {
       return res.status(400).send({ status: false, message: "you must enter data for creating books" });
@@ -111,6 +112,16 @@ let createBooks = async function (req, res) {
 
     if (data.userId != req.userId)
       return res.status(403).send({status: false, message: "You don't have authority to create this Book."});
+
+
+     
+
+
+
+
+
+
+
 
       /********************************************BOOK CREATE************************************************/
 
