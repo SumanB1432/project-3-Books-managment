@@ -269,6 +269,8 @@ const updateBook = async function (req, res) {
     {
       if (isValid(title)) 
       {
+        let findTitle = await bookModel.findOne({title});
+        if(findTitle) return res.status(400).send({status: false, message: " Book title is not unique" })
         filterData.title = title;
       } 
       else 
@@ -276,6 +278,8 @@ const updateBook = async function (req, res) {
         return res.status(400).send({ status: false, message: "Please enter valid book title" });
       }
     }
+
+    
 
 
     if (excerpt) 
@@ -307,6 +311,9 @@ const updateBook = async function (req, res) {
     {
       if (isValid(ISBN) && /^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+$/.test(ISBN)) 
       {
+        
+        let findISBN = await bookModel.findOne({ISBN});
+        if(findISBN) return res.status(400).send({status: false, message: " ISBN is not unique" })
         filterData.ISBN = ISBN;
       } 
       else 
@@ -315,18 +322,20 @@ const updateBook = async function (req, res) {
       }
     }
 
-
-    let findData = await bookModel.find(filterData);
  
-    if (findData.length !== 0) return res.status(400).send({ status: false, message: "Data Not Unique" });
+
+
+  let findData = await bookModel.find(filterData);
+ 
+   if (findData.length !== 0) return res.status(400).send({ status: false, message: "Data Not Unique" });
     
     
       let updateData = await bookModel.findOneAndUpdate({ _id: id},{$set: 
         {
-            title: data.title,
-            excerpt: data.excerpt,
-            releasedAt: data.releasedAt,
-            ISBN: data.ISBN,
+            title,
+            excerpt,
+            releasedAt,
+            ISBN,
           },
         },{ new: true, upsert: true });
 
