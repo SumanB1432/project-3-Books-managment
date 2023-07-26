@@ -1,6 +1,7 @@
 # Radon
 
 ## Project - Books Management
+- Start Command:- `npm start`
 
 ### Key points
 - Create a group database `groupXDatabase`. You can clean the db you previously used and resue that.
